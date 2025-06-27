@@ -72,6 +72,7 @@ func main() {
 
 	mcpServer.AddTool(tools.GetSeries(client))
 	mcpServer.AddPrompt(prompts.GeneratePromQL(client))
+	mcpServer.AddPrompt(prompts.GeneratePersesDashboard())
 
 	ctx, cancel := context.WithCancel(context.Background())
 
