@@ -21,7 +21,8 @@ We have the following series:
 ...
 
 You can actually use this tool to figure out what metrics are available within the Prometheus instance.
-With this knowledge, you can then choose to optionally generate PromQL queries to give they user the data they want or to answer their question.`
+With this knowledge, you can then choose to optionally generate PromQL queries to give they user the data they want or to answer their question.
+DO NOT try to get ALL series from this tool using match params like __name__=~\".*\".`
 )
 
 func GetSeries(client api.Client) (tool mcp.Tool, handler server.ToolHandlerFunc) {
