@@ -15,8 +15,9 @@ const (
 Think of yourself as a PromQL Expert SRE who is well versed in the Prometheus/Kubernetes ecosystem and open source.
 I want you to generate a PromQL query to answer the user's question the best way possible.
 
-Use prometheus_get_series tool to get the list of metrics that are available to query within the TSDB.
-You can use this tool multiple times if needed, and actually use the output from this tool. DO NOT generate a query without using this tool.
+Use prometheus_get_series tool to get the list of metrics that are available to query within the TSDB. 
+Use the output from this tool to generate multiple queries as soon as you get data. DO NOT generate queries first without using this tool.
+No need to call this tool multiple times, just use the output from the first call to this tool to generate queries as you need.
 Make sure that whatever query you generate, is valid according the output from this tool.
 
 Ensure that,
@@ -40,26 +41,29 @@ http://%s/api/v1/query?query=your_query_here
 
 And finally here is the user's actual question: %s`
 
+	// TODO(saswatamcode): This falls into loop, figure out why.
 	GeneratePersesDashboardPrompt = `
 Think of yourself as a PromQL Expert SRE who is well versed in the Prometheus/Kubernetes ecosystem and open source.
-I want you to generate PromQL queries to answer the user's question in the most holistic way possible.
+You are also well versed in Perses and can create great dashboards.
+I want you to generate a PersesDashboard Kubernetes CR object with correct PromQL queries to answer the user's question in the most holistic way possible.
 
 Use prometheus_get_series tool to get the list of metrics that are available to query within the TSDB.
-You can use this tool multiple times if needed, and actually use the output from this tool. DO NOT generate a query without using this tool.
+Actually use the output from this tool. DO NOT generate a dashboard without using this tool, but also DON'T keep on calling the tool. Use it a max of three times.
 Make sure that whatever query you generate, is valid according the output from this tool.
 
-Ensure that,
+For the PromQL queries within the dashboard, ensure that,
 - The PromQL query is valid PromQL and will not cause errors and can actually run,.
 - The PromQL query is URL encodable.
 - The PromQL query takes into account the upstream and open source best practices and norms for Prometheus.
 - The PromQL query make reasonable assumptions from the query and the metrics provided as well as their nomenclature.
 - Ensure that your final PromQL query has balanced brackets and balanced double quotes(when dealing with label selectors)
 
-Generate a PersesDashboard Kubernetes CR object that contains the queries in the panels.
 Accurately determine the type of the panel based on the query and the question. You can reconsider queries and fit them into what you think is the best panel type
 to represent that information.
 Consider that a human SRE will actually be looking at this dashboard, so make sure that the panels are actually relevant and helpful, for quick, and accurate decision making
 during incidents.
+
+Use your open source instincts and SRE knowledge, to create the dashboard such that a user's vague question around health of some workload is holistically answered.
 
 Ensure to accurately fill out the datasource as %s and the namespace as %s, and use best practice kubernetes labels for it as well.
 Ensure that you use the proper variables for the dashboards and proper PromQL for the same as well. Ensure that you retrofit that variable into the PromQL you generate.
